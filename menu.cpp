@@ -57,9 +57,7 @@ void AI() {
     headers = curl_slist_append(headers, "referer: https://api.ryzumi.vip/");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-    // Set opsi tambahan
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L); // Ikuti redirect
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
 
@@ -85,7 +83,6 @@ void AI() {
   }
 
   curl_global_cleanup();
-  std::cout << "Proses Selesai" << std::endl;
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   std::cin.get();
 }
