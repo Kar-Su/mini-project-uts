@@ -67,11 +67,11 @@ void AI() {
 
     if (res == CURLE_OK) {
       try {
-        json json_response = json::parse(response);
-        if (json_response["success"]) {
-          std::cout << "AI: " << json_response["result"] << std::endl;
+        json jsonResponse = json::parse(response);
+        if (jsonResponse["success"]) {
+          std::cout << "AI: " << jsonResponse["result"] << std::endl;
         } else {
-          std::cerr << "API Error: " << json_response.dump() << std::endl;
+          std::cerr << "API Error: " << jsonResponse.dump() << std::endl;
         }
       } catch (...) {
         std::cerr << "Response (non-JSON):\n" << response << std::endl;
