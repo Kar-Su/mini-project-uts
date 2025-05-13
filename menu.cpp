@@ -1,15 +1,26 @@
 #include <bits/stdc++.h>
 
+/* 
+Program ini hanya di optimalisasi dengan data struktur modern (C++ style) tidak bisa menggunakan array tradisional.
+akan tetapi program ini sudah didesain agar developer bisa memanage dengan mudah jika ingin mengganti data struktur traditional (C style).
+Desain program ini menggunakan Modular Programming dengan fungsi template Container.
+*/
 
+// Data struktur yang digunakan
 using myArray = std::vector<int>;
 
+// Deklarasi prototype
 void dMenu();
 
-template <typename T> void InsertData(T &data);
+template <typename Container> void InsertData(Container &data);
 
-template <typename T> void PrintData(T &data);
+template <typename Container> void PrintData(Container &data);
 
-template <typename T> void SortingData(T &data);
+namespace SortInsertion{
+    template <typename Container> void Ascending(Container& data, const size_t& n);
+    template <typename Container> void Descending(Container& data, const size_t& n);
+    template <typename Container> void StartSort(Container& data);
+}
 
 void SepatahKata();
 
@@ -31,11 +42,11 @@ int main() {
       break;
     case '3':
       /* code */
-      SortingData<myArray>(arr);
+      SortInsertion::StartSort<myArray>(arr);
       break;
     case '4':
-      SepatahKata();
       /* code */
+    SepatahKata();
       break;
     case '5':
       /* code */
@@ -54,7 +65,7 @@ int main() {
   return 0;
 }
 
-
+// Tampilan menu
 void dMenu() {
   system("clear");
   std::cout << "Aplikasi Sorting Insertion" << "\n";
@@ -66,7 +77,9 @@ void dMenu() {
   std::cout << "Masukan angka: ";
 }
 
-template <typename T> void InsertData(T &data) {
+// Memasukkan data
+template <typename Container> void InsertData(Container &data) {
+    // Mempermudah user untuk melihat data sebelum memasukkan data
   PrintData<myArray>(data);
 
   // if (!data.empty()) {
@@ -89,7 +102,8 @@ template <typename T> void InsertData(T &data) {
   } while (1);
 }
 
-template <typename T> void PrintData(T &data) {
+// Menampilkan data
+template <typename Container> void PrintData(Container &data) {
   system("clear");
 
   if(data.empty()) {
@@ -108,34 +122,81 @@ template <typename T> void PrintData(T &data) {
   std::cin.get();
 }
 
-template <typename T> void SortingData(T &data) {
-  system("clear");
+// Sorting Insertion bertipe Ascending
+template <typename Container> void SortInsertion::Ascending(Container& data, const size_t& n){
+    for (size_t i = 1; i < n; i++) {
+        int tmp = data[i];
+        size_t j = i;
 
-  if(data.empty()){
-    std::cout << "Data anda kosong, silahkan isi terlebih dahulu!" <<std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    std::cin.get();
-    return;
-  }
+        while (j > 0 and data[j - 1] > tmp) {
+            data[j] = data[j - 1];
 
-  size_t n = data.size();
-  for (size_t i = 1; i < n; i++) {
-    int tmp = data[i];
-    size_t j = i;
-
-    while (j > 0 and data[j - 1] > tmp) {
-      data[j] = data[j - 1];
-
-      j--;
-    }
+            j--;
+        }
     data[j] = tmp;
-  }
-
-  std::cout << "Sorting data berhasil!" << std::endl;
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  std::cin.get();
+    }
 }
 
+// Sorting Insertion bertipe Descending
+template <typename Container> void SortInsertion::Descending(Container& data, const size_t& n){
+    for (size_t i = 1; i < n; i++) {
+        int tmp = data[i];
+        size_t j = i;
+
+        while (j > 0 and data[j - 1] < tmp) {
+            data[j] = data[j - 1];
+
+            j--;
+        }
+    data[j] = tmp;
+    }
+}
+
+// Memulai program Sorting Insertion     
+template <typename Container> void SortInsertion::StartSort(Container& data){
+    system("clear");
+    if(data.empty()){
+        std::cout << "Data anda kosong!" << std::endl;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.get();
+        return;
+    }
+    char pl;
+    const size_t n = data.size();
+
+    do{
+    system("clear");
+
+    std::cout << 
+    "Tipe Sorting\n" << 
+    "1. Ascending Sort\n" <<
+    "2. Descending Sort\n" << 
+    "pilih (1/2): ";
+    std::cin >> pl;
+           
+    switch(pl) {
+        case '1':
+            SortInsertion::Ascending(data, n);
+            break;
+        case '2':
+            SortInsertion::Descending(data, n);
+            break;
+        default:
+        system("clear");
+            std::cout << "Input Salah!\n" <<
+            "Silahkan ulangi kembali" << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.get();
+            break;
+        }
+    } while(pl != '1' and pl != '2');
+    system("clear");
+    std::cout << "Sorting Berhasil!";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.get();
+}
+
+// Saya masih pemula
 void SepatahKata() {
   system("clear");
   std::cout << "Hello World " << std::endl;
